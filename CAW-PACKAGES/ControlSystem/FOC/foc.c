@@ -8,6 +8,7 @@
 #include "foc.h"
 
 #include <math.h>
+//#include <cmath>
 
 #define _3PI_2 4.71238898038469f
 #define _PI 3.141592653589793f
@@ -22,12 +23,14 @@ float _normalizeAngle(float angle) {
 }
 
 // 求解电角度（开环）
-float _openloop_electricalAngle(float shaft_angle, int pole_pairs) {
+float _openloop_electricalAngle(float shaft_angle, int pole_pairs) 
+{
   return (shaft_angle * pole_pairs);
 }
 
 // 求解电角度（闭环）
-float _closeloop_electricalAngle(FOC_T *hfoc) {
+float _closeloop_electricalAngle(FOC_T *hfoc) 
+{
   return _normalizeAngle((float)(hfoc->dir * hfoc->pp) *
                              hfoc->Sensor_GetOnceAngle() -
                          hfoc->zero_electric_angle);
@@ -93,8 +96,9 @@ void FOC_SetTorque(FOC_T *hfoc, float Uq, float angle_el) {
  * @return {*}
  */
 void FOC_Closeloop_Init(FOC_T *hfoc, TIM_HandleTypeDef *tim, float pwm_period,
-                        float voltage, int dir, int pp) {
-  memset((void *)hfoc, 0, sizeof(FOC_T));
+                        float voltage, int dir, int pp) 
+{
+  memset((void *)hfoc, 0, sizeof(FOC_T));//初始化结构体里面变量全部置零
   hfoc->tim = tim;
   hfoc->pwm_period = pwm_period;
   // 配置电源电压和限压
@@ -173,4 +177,8 @@ void FOC_Bind_SensorGetVelocity(FOC_T *hfoc, FUNC_SENSOR_GET_VELOCITY s) {
  * @param {FOC_T} *hfoc foc句柄
  * @return {*}
  */
-void FOC_SensorUpdate(FOC_T *hfoc) { hfoc->Sensor_Update(); }
+void FOC_SensorUpdate(FOC_T *hfoc) 
+	{ hfoc->Sensor_Update(); }
+
+
+
